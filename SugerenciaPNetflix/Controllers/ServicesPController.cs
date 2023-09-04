@@ -35,6 +35,31 @@ namespace SugerenciaPNetflix.Controllers
                 return new JsonResult(resul);
             }
         #endregion
-        
+
+        #region Usuario
+        [HttpPost("RegistroUsuario")]
+        public IActionResult RegistroUsuario(UsuarioVM usuario)
+        {
+            var result = _servicioNetflix.registrarUsuario(usuario);
+            return new JsonResult(result);
+        }
+
+        [HttpGet("GetAllUsuarios")]
+        public IActionResult GetAllUsuarios()
+        {
+            var result = _servicioNetflix.GetAllUsuarios();
+            return new JsonResult(result);
+        }
+
+        [HttpPost("ActualizarTipoPelicula")]
+        public IActionResult ActualizarUsuarios(UsuarioVM usuario)
+        {
+            var resul = _servicioNetflix.actualizarUsuarios(usuario);
+            return new JsonResult(resul);
+        }
+        #endregion
+
+
+
     }
 }

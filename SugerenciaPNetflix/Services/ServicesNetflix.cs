@@ -80,6 +80,54 @@ namespace SugerenciaPNetflix.Services
         }
         #endregion
 
+        #region Usuario
+
+        public bool registrarUsuario(UsuarioVM usuario)
+        {
+            var existe = _context.Usuarios.Where(x => x.NombreUsuario == usuario.Nombre_usuario).Any();
+            bool registrado = false;
+            if (!existe)
+            {
+                using (var context = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        Usuario user = new Usuario
+                        {
+                            NombreUsuario = usuario.Nombre_usuario,
+                            FechaNacimiento = usuario.fecha_nacimiento
+                        };
+                        _context.Usuarios.Add(user);
+                        _context.SaveChanges();
+                        int codigo = _context.Usuarios.Where(x => x.NombreUsuario == usuario.Nombre_usuario).FirstOrDefault().IdUsuario;
+                        if (usuario.tipos != null)
+                        {
+                            foreach (var item in usuario.tipos)
+                            {
+                                UsuarioTipoPelicula relacion = new UsuarioTipoPelicula
+                                {
+                                    IdUsuario = codigo,
+                                    IdTipoPelicula = item.Id_TipoPelicula
+                                };
+                                _context.UsuarioTipoPeliculas.Add(relacion);
+                                _context.SaveChanges();
+                            }
+                        }
+                        context.Commit();
+
+                        registrado = true;
+                    }
+                    catch (Exception)
+                    {
+                        context.Rollback();
+                        registrado = false;
+                    }
+                }
+            }
+            return registrado;
+        }
+
+        #endregion
 
 
     }

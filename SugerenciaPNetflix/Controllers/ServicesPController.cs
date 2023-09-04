@@ -30,7 +30,7 @@ namespace SugerenciaPNetflix.Controllers
                 var resul = _servicioNetflix.actualizarTipoPelicula(tipoPelicula);
                 return new JsonResult(resul);
             }
-            #endregion
+        #endregion
         
     }
 }

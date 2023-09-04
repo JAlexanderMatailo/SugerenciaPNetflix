@@ -5,8 +5,18 @@ namespace SugerenciaPNetflix.Services
 {
     public interface IServicioNetflix
     {
+        #region TipoPelicula
         bool registrarTipoPelicula(TipoPeliculaVM tipopel);
         List<TipoPeliculaVM> GetAllTipoPelicula();
         bool actualizarTipoPelicula(TipoPeliculaVM tipopel);
+        #endregion
+
+        #region Usuario
+        bool registrarUsuario(UsuarioVM usuario);
+
+
+        #endregion
+
+
     }
 }

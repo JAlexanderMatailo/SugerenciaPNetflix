@@ -127,6 +127,56 @@ namespace SugerenciaPNetflix.Services
             return registrado;
         }
 
+        public List<UsuarioVM> GetAllUsuarios()
+        {
+            List<UsuarioVM> listaUsuarios = new List<UsuarioVM>();
+            var UsuariolIsta = _context.Usuarios.ToList();
+            foreach (var item in UsuariolIsta)
+            {
+                UsuarioVM usuarios = new UsuarioVM
+                {
+                    ID_Usuario = item.IdUsuario,
+                    Nombre_usuario = item.NombreUsuario,
+                    fecha_nacimiento = item.FechaNacimiento
+                };
+                listaUsuarios.Add(usuarios);
+            };
+            return listaUsuarios;
+        }
+
+        public bool actualizarUsuarios(UsuarioVM usuarios)
+        {
+            var usuarioExiste = _context.Usuarios.FirstOrDefault(x => x.IdUsuario == usuarios.ID_Usuario);
+            if (usuarioExiste != null)
+            {
+                usuarioExiste.NombreUsuario = usuarios.Nombre_usuario;
+                usuarioExiste.FechaNacimiento = usuarios.fecha_nacimiento;
+            }
+            try
+            {
+                _context.SaveChanges();
+                int codigo = _context.Usuarios.Where(x => x.NombreUsuario == usuarios.Nombre_usuario).FirstOrDefault().IdUsuario;
+                if (usuarios.tipos != null)
+                {
+                    foreach (var item in usuarios.tipos)
+                    {
+                        UsuarioTipoPelicula relacion = new UsuarioTipoPelicula
+                        {
+                            IdUsuario = codigo,
+                            IdTipoPelicula = item.Id_TipoPelicula
+                        };
+                        _context.UsuarioTipoPeliculas.Add(relacion);
+                        _context.SaveChanges();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return false;
+        }
         #endregion
 
 

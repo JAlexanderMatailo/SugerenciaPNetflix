@@ -193,7 +193,8 @@ namespace SugerenciaPNetflix.Services
                         Pelicula pelicula = new Pelicula
                         {
                             NombrePelicula = peliculaVM.nombre_pelicula,
-                            DuracionPelicula = peliculaVM.duracion_pelicula
+                            DuracionPelicula = peliculaVM.duracion_pelicula,
+                            Imagen = peliculaVM.imagen
                         };
                         _context.Peliculas.Add(pelicula);
                         _context.SaveChanges();

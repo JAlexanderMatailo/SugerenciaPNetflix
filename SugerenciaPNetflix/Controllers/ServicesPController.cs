@@ -51,7 +51,7 @@ namespace SugerenciaPNetflix.Controllers
             return new JsonResult(result);
         }
 
-        [HttpPost("ActualizarTipoPelicula")]
+        [HttpPost("ActualizarUsuario")]
         public IActionResult ActualizarUsuarios(UsuarioVM usuario)
         {
             var resul = _servicioNetflix.actualizarUsuarios(usuario);

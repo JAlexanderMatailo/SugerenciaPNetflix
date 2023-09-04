@@ -11,7 +11,6 @@ namespace SugerenciaPNetflix.Services
         {
             _context = context;
         }
-
         #region TipoPelicula
         public bool registrarTipoPelicula(TipoPeliculaVM tipopel)
         {

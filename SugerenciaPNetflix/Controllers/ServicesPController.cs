@@ -59,6 +59,28 @@ namespace SugerenciaPNetflix.Controllers
         }
         #endregion
 
+        #region Pelicula
+        [HttpPost("RegistroPelicula")]
+        public IActionResult RegistroPelicula(PeliculaVM pelicula)
+        {
+            var result = _servicioNetflix.registrarPeliculas(pelicula);
+            return new JsonResult(result);
+        }
+
+        [HttpGet("GetAllPeliculas")]
+        public IActionResult GetAllPeliculas()
+        {
+            var result = _servicioNetflix.GetAllUsuarios();
+            return new JsonResult(result);
+        }
+
+        [HttpPost("ActualizarPelicula")]
+        public IActionResult ActualizarPelicula(PeliculaVM pelicula)
+        {
+            var resul = _servicioNetflix.actualizarPelicula(pelicula);
+            return new JsonResult(resul);
+        }
+        #endregion
 
 
     }

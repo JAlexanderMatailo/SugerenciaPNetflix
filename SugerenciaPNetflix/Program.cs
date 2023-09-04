@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using SugerenciaPNetflix.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,29 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+#region Conexion DB
+
+builder.Services.AddDbContext<SugerencaPeliculaContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetSection("AppSettings").GetSection("DefaultConnection").Value);
+});
+
+var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+
+#endregion
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "API",
+                      builder =>
+                      {
+                          builder.WithHeaders("*");
+                          builder.WithOrigins("*");
+                          builder.WithMethods("*");
+
+                      });
+});
 
 var app = builder.Build();
 

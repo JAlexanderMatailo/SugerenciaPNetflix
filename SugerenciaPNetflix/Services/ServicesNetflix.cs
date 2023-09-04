@@ -44,6 +44,40 @@ namespace SugerenciaPNetflix.Services
             return registrado;
         }
 
+        public List<TipoPeliculaVM> GetAllTipoPelicula()
+        {
+            List<TipoPeliculaVM> ListaTipoPeliculas = new List<TipoPeliculaVM>();
+            var tipoPelicula = _context.TipoPeliculas.ToList();
+            foreach (var item in tipoPelicula)
+            {
+                TipoPeliculaVM tipoP = new TipoPeliculaVM
+                {
+                    Id_TipoPelicula = item.IdTipoPelicula,
+                    nombre_TipoPelicula = item.NombreTipoPelicula
+                };
+                ListaTipoPeliculas.Add(tipoP);
+            };
+            return ListaTipoPeliculas;
+        }
+
+        public bool actualizarTipoPelicula(TipoPeliculaVM tipopel)
+        {
+            var tipoPeliculaExiste = _context.TipoPeliculas.FirstOrDefault(x => x.IdTipoPelicula == tipopel.Id_TipoPelicula);
+            if (tipoPeliculaExiste != null)
+            {
+                tipoPeliculaExiste.NombreTipoPelicula = tipopel.nombre_TipoPelicula;
+            }
+            try
+            {
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return false; // No se encontró el tipo de pelicula a actualizar
+        }
         #endregion
     }
 

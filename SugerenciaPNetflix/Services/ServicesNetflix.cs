@@ -179,6 +179,103 @@ namespace SugerenciaPNetflix.Services
         }
         #endregion
 
+        #region Peliculas
+        public bool registrarPeliculas(PeliculaVM peliculaVM)
+        {
+            var existe = _context.Peliculas.Where(x => x.NombrePelicula == peliculaVM.nombre_pelicula).Any();
+            bool registrado = false;
+            if (!existe)
+            {
+                using (var context = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        Pelicula pelicula = new Pelicula
+                        {
+                            NombrePelicula = peliculaVM.nombre_pelicula,
+                            DuracionPelicula = peliculaVM.duracion_pelicula
+                        };
+                        _context.Peliculas.Add(pelicula);
+                        _context.SaveChanges();
+                        int codigo = _context.Peliculas.Where(x => x.NombrePelicula == peliculaVM.nombre_pelicula).FirstOrDefault().IdPelicula;
+                        if (peliculaVM.tipos_pelicula != null)
+                        {
+                            foreach (var item in peliculaVM.tipos_pelicula)
+                            {
+                                PeliculaTipoPelicula relacion = new PeliculaTipoPelicula
+                                {
+                                    IdPelicula = codigo,
+                                    IdTipoPelicula = item.Id_TipoPelicula
+                                };
+                                _context.PeliculaTipoPeliculas.Add(relacion);
+                                _context.SaveChanges();
+                            }
+                        }
+                        context.Commit();
+                        registrado = true;
+
+                    }
+                    catch (Exception)
+                    {
+                        context.Rollback();
+                        registrado = false;
+                    }
+                }
+            }
+            return registrado;
+        }
+
+        public List<PeliculaVM> GetAllPeliculas()
+        {
+            List<PeliculaVM> listapelicula = new List<PeliculaVM>();
+            var peliculas = _context.Peliculas.ToList();
+            foreach (var item in peliculas)
+            {
+                PeliculaVM pelicula = new PeliculaVM
+                {
+                    Id_Pelicula = item.IdPelicula,
+                    nombre_pelicula = item.NombrePelicula,
+                    duracion_pelicula = item.DuracionPelicula
+                };
+                listapelicula.Add(pelicula);
+            };
+            return listapelicula;
+        }
+
+        public bool actualizarPelicula(PeliculaVM pelicula)
+        {
+            var peliculaExiste = _context.Peliculas.FirstOrDefault(x => x.IdPelicula == pelicula.Id_Pelicula);
+            if (peliculaExiste != null)
+            {
+                peliculaExiste.NombrePelicula = pelicula.nombre_pelicula;
+                peliculaExiste.DuracionPelicula = pelicula.duracion_pelicula;
+            }
+            try
+            {
+                _context.SaveChanges();
+                int codigo = _context.Peliculas.Where(x => x.NombrePelicula == pelicula.nombre_pelicula).FirstOrDefault().IdPelicula;
+                if (pelicula.tipos_pelicula != null)
+                {
+                    foreach (var item in pelicula.tipos_pelicula)
+                    {
+                        PeliculaTipoPelicula relacion = new PeliculaTipoPelicula
+                        {
+                            IdPelicula = codigo,
+                            IdTipoPelicula = item.Id_TipoPelicula
+                        };
+                        _context.PeliculaTipoPeliculas.Add(relacion);
+                        _context.SaveChanges();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return false;
+        }
+        #endregion
 
     }
 

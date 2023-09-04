@@ -13,7 +13,8 @@ namespace SugerenciaPNetflix.Services
 
         #region Usuario
         bool registrarUsuario(UsuarioVM usuario);
-
+        List<UsuarioVM> GetAllUsuarios();
+        bool actualizarUsuarios(UsuarioVM usuarios);
 
         #endregion
 

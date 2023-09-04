@@ -7,10 +7,14 @@ namespace SugerenciaPNetflix.Controllers
     public class ServicesPController : Controller
     {
         private readonly IServicioNetflix _servicioNetflix;
+        public ServicesPController(IServicioNetflix servicioNetflix)
+        {
+            _servicioNetflix = servicioNetflix;
+        }
 
         #region TipoPelicula
 
-            [HttpPost("RegistroTipoPelicula")]
+        [HttpPost("RegistroTipoPelicula")]
             public IActionResult RegistroTipoPelicula(TipoPeliculaVM tipoPelicula)
             {
                 var result = _servicioNetflix.registrarTipoPelicula(tipoPelicula);

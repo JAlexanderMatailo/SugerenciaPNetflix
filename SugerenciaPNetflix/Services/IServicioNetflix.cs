@@ -18,6 +18,12 @@ namespace SugerenciaPNetflix.Services
 
         #endregion
 
+        #region Pelicula
+        bool registrarPeliculas(PeliculaVM peliculaVM);
+        List<PeliculaVM> GetAllPeliculas();
+        bool actualizarPelicula(PeliculaVM pelicula);
+        #endregion
+
 
     }
 }
